@@ -1,10 +1,12 @@
-import plotly.express as px
 import pandas as pd
-import datetime
 
-# Cargar los datos desde el archivo Excel
-df_fuente = pd.read_csv('https://www.datos.gov.co/resource/3y4s-dmxy.csv')
-df = df_fuente
+from pyodide.http import open_url
 
-# Mostrar los primeros registros del DataFrame para verificar
-print(df)
+        # URL del archivo Excel
+        file_url = 'https://github.com/Deimerpajaro/Proyecto/blob/main/DataBases/Datos_2021_356.xlsx'
+
+        # Cargar los datos desde la URL
+        df = pd.read_excel(open_url(file_url))
+
+        # Realiza cualquier procesamiento necesario aquí
+        print(df.head())
