@@ -222,18 +222,19 @@ ul{
 .aside .logo a{
     color: var(--text-black-900);
     font-weight: 700;
-    padding: 15px 20px;font-size: 30px;
+    padding: 15px 20px;
+    font-size: 30px;
     letter-spacing: 5px;
     position: relative;
 }
 
 .aside .logo a span{
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 40px;
+    font-size: 30px;
     color: var(--skin-color);
 }
 
-.aside .logo a::before{
+/* .aside .logo a::before{
     content: '';
     position: absolute;
     width: 20px;
@@ -255,10 +256,10 @@ ul{
     top: 0;
     right: 10px;
     border-radius: 25%;
-}
+} */
 
 .aside .nav{
-    margin-top: 50px;
+    margin-top: 0px;
 }
 
 .aside .nav-toggler{
@@ -320,8 +321,10 @@ ul{
 }
 
 .aside .nav li{
+    border-radius: 15px 15px 0px 0px;
     margin-bottom: 20px;
     display: block;
+    background-color: rgba(245, 245, 245, 0.8);
 }
 
 .aside .nav li a{
@@ -351,6 +354,39 @@ ul{
     }
     100%{
         transform: rotate(-20deg);
+    }
+}
+
+.rotate-logo{
+    transition: 1s;
+    animation: rotate-logo 180s infinite;
+    width: 30rem;
+    height: 30rem;
+    background-size: contain;
+    background-image: url(../images/icon.png);
+}
+
+@keyframes rotate-logo{
+    0%{
+        transform: rotate(0deg);
+    }
+    20%{
+        transform: rotate(90deg);
+    }
+    40%{
+        transform: rotate(120deg);
+    }
+    50%{
+        transform: rotate(180deg);
+    }
+    70%{
+        transform: rotate(220deg);
+    }
+    80%{
+        transform: rotate(300deg);
+    }
+    100%{
+        transform: rotate(360deg);
     }
 }
 
@@ -389,6 +425,7 @@ h3.my-profession{
 
 .typing{
     color: var(--skin-color);
+    background-color: rgba(255, 255, 255, 0.779);
     font-family:'Courier New', Courier, monospace;
 }
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enlace Excel con PyScript</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+    <h1>Enlazar base de datos de Excel con PyScript</h1>
+    <py-script>
+        import pandas as pd
+        from pyodide.http import pyfetch
+
+        async def cargar_datos():
+            url = '<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enlace Excel con PyScript</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+    <h1>Enlazar base de datos de Excel con PyScript</h1>
+    <py-script>
+        import pandas as pd
+        from pyodide.http import pyfetch
+
+        async def cargar_datos():
+            url = 'https://raw.githubusercontent.com/Deimerpajaro/Proyecto/refs/heads/main/DataBases/Datos_2021_356.xlsx'
+            response = await pyfetch(url)
+            if response.status == 200:
+                data = await response.bytes()
+                df = pd.read_excel(data)
+                print(df.head())
+
+        cargar_datos()
+    </py-script>
+</body>
+</html>
+'
+            response = await pyfetch(url)
+            if response.status == 200:
+                data = await response.bytes()
+                df = pd.read_excel(data)
+                print(df.head())
+
+        cargar_datos()
+    </py-script>
+</body>
+</html>

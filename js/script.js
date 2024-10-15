@@ -3,7 +3,7 @@
  { 
      strings:[" ",
      "Grupo 4",
-     "Analisis Descriptiva"],
+     "Analisis Descriptivo"],
      typeSpeed:10, 
      backSpeed:100, 
      loop:true
