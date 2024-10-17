@@ -11,11 +11,11 @@ def semana_a_fecha(anio, semana):
 
 # Paso 1: Conexión con las fuentes de datos (Archivos en Excel)
 file_paths = [
-    'C:\\Users\\knives\\Desktop\\Devs\\Python\\BootCampUTB\\Proyecto\\DataBases\\Datos_2019_356.xlsx',
-    'C:\\Users\\knives\\Desktop\\Devs\\Python\\BootCampUTB\\Proyecto\\DataBases\\Datos_2020_356.xlsx',
-    'C:\\Users\\knives\\Desktop\\Devs\\Python\\BootCampUTB\\Proyecto\\DataBases\\Datos_2021_356.xlsx',
-    'C:\\Users\\knives\\Desktop\\Devs\\Python\\BootCampUTB\\Proyecto\\DataBases\\Datos_2022_356.xlsx',
-    'C:\\Users\\knives\\Desktop\\Devs\\Python\\BootCampUTB\\Proyecto\\DataBases\\Datos_2023_356.xlsx'
+    'https://raw.githubusercontent.com/Deimerpajaro/Proyecto/refs/heads/main/DataBases/Datos_2019_356.xlsx',
+    'https://raw.githubusercontent.com/Deimerpajaro/Proyecto/refs/heads/main/DataBases/Datos_2020_356.xlsx',
+    'https://raw.githubusercontent.com/Deimerpajaro/Proyecto/refs/heads/main/DataBases/Datos_2021_356.xlsx',
+    'https://raw.githubusercontent.com/Deimerpajaro/Proyecto/refs/heads/main/DataBases/Datos_2022_356.xlsx',
+    'https://raw.githubusercontent.com/Deimerpajaro/Proyecto/refs/heads/main/DataBases/Datos_2023_356.xlsx'
 ]
 
 # Leer y concatenar todos los DataFrames
@@ -34,11 +34,9 @@ df_fuente['Ciclo_de_Vida'] = pd.cut(df_fuente['EDAD'], bins=bins, labels=labels,
 deptos_interes = ["BOLIVAR", "CORDOBA", "SUCRE", "SAN ANDRES"]
 df_dpts = df_fuente[df_fuente["Departamento_ocurrencia"].isin(deptos_interes)]
 
-# Paso 3: Crear gráficos
-
 # Gráfico de calor (heatmap)
 df_mp = df_dpts.groupby(['Departamento_ocurrencia', 'ANO']).confirmados.sum().unstack().fillna(0)
-fig_mc = px.imshow(df_mp, labels=dict(x="Año", y="Departamento", color="Confirmados"),
+fig_mc = px.imshow(df_mp, labels=dict(x="Año", y="Departamento", color="Confirmados", color_continuous_scale=['#dc0000','#23d000']),
                    x=df_mp.columns, y=df_mp.index,
                    title="Intentos de Suicidio en el Caribe Colombiano")
 
@@ -86,30 +84,33 @@ def update_graphs(selected_year, selected_sexo):
     if selected_sexo != 'todos':
         df_filtered = df_filtered[df_filtered['SEXO'] == selected_sexo]
     
+    Colores_departamentos=['#0500a8','#bf0000','#00edf1','#676702']
+    Colores_sexo=['#d545e1','#0000c6']
+    
     # Gráfico de torta (pie chart)
     df_torta = df_filtered.groupby('Departamento_ocurrencia').confirmados.sum().reset_index()
-    fig_torta = px.pie(df_torta, values='confirmados', names='Departamento_ocurrencia', title='Distribución por Departamentos')
+    fig_torta = px.pie(df_torta, values='confirmados', names='Departamento_ocurrencia', color="Departamento_ocurrencia", title='Distribución por Departamentos', color_discrete_sequence=Colores_departamentos)
 
     # Gráfico de líneas (line chart)
     df1 = df_filtered.groupby(['Departamento_ocurrencia', 'FechaIncidente']).confirmados.sum().reset_index()
-    fig_lineas = px.line(df1, x="FechaIncidente", y="confirmados", color="Departamento_ocurrencia",
+    fig_lineas = px.line(df1, x="FechaIncidente", y="confirmados", color="Departamento_ocurrencia",color_discrete_sequence=Colores_departamentos,
                          title=f'Tendencia de Incidentes de Suicidio en {selected_year}' if selected_year != 'todos' else 'Tendencia de Incidentes de Suicidio')
     
     # Gráfico de barras por estrato y departamento (bar chart)
     df2 = df_filtered.groupby(['estrato', 'Departamento_ocurrencia']).confirmados.sum().reset_index()
-    fig_columna_1 = px.bar(df2, x="estrato", y="confirmados", color="Departamento_ocurrencia", barmode="group",
+    fig_columna_1 = px.bar(df2, x="estrato", y="confirmados", color="Departamento_ocurrencia", color_discrete_sequence=Colores_departamentos, barmode="group",
                            title=f'Casos por Estratos vs Departamentos en {selected_year}' if selected_year != 'todos' else 'Casos por Estratos vs Departamentos')
     
     # Gráfico de barras por sexo y fecha (bar chart)
     df3 = df_filtered.groupby(['SEXO', 'FechaIncidente']).confirmados.sum().reset_index()
-    fig_barras_sexo = px.bar(df3, x='FechaIncidente', y='confirmados', color='SEXO', title=f'Tendencia Suicida según el Género en {selected_year}' if selected_year != 'todos' else 'Tendencia Suicida según el Género')
+    fig_barras_sexo = px.bar(df3, x='FechaIncidente', y='confirmados', color='SEXO', color_discrete_sequence=Colores_sexo, title=f'Tendencia Suicida según el Género en {selected_year}' if selected_year != 'todos' else 'Tendencia Suicida según el Género')
     
     # Gráfico de barras por ciclo de vida y departamento para mujeres (bar chart)
     df_sexf = df_filtered[df_filtered["SEXO"] == "F"]
     df_sexf['Ciclo_de_Vida'] = pd.Categorical(df_sexf['Ciclo_de_Vida'], categories=labels, ordered=True)
     df4 = df_sexf.groupby(['Departamento_ocurrencia', 'Ciclo_de_Vida']).confirmados.sum().reset_index()
-    fig_columna_2 = px.bar(df4, x="Ciclo_de_Vida", y="confirmados", color="Departamento_ocurrencia", barmode="group",
-                           title=f'Intentos de Suicidio en Mujeres por Ciclo de Vida en {selected_year}' if selected_year != 'todos' else 'Intentos de Suicidio en Mujeres por Ciclo de Vida')
+    fig_columna_2 = px.bar(df4, x="Ciclo_de_Vida", y="confirmados", color="Departamento_ocurrencia", barmode="group", color_discrete_sequence=Colores_departamentos,
+                           title=f'Intentos de Suicidio por Ciclo de Vida en {selected_year}' if selected_year != 'todos' else 'Intentos de Suicidio por Ciclo de Vida')
     
     return fig_torta, fig_lineas, fig_columna_1, fig_barras_sexo, fig_columna_2
 
